@@ -6,9 +6,9 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 COMPRESS_ENABLED = True
 
-HOSTNAME = 'trac.staging.nyaruka.com'
-ALLOWED_HOSTS = ['trac.nyaruka.com']
-SESSION_COOKIE_DOMAIN = 'trac.staging.nyaruka.com'
+HOSTNAME = 'tracpro.staging.nyaruka.com'
+ALLOWED_HOSTS = ['tracpro.staging.nyaruka.com', '*.tracpro.staging.nyaruka.com']
+SESSION_COOKIE_DOMAIN = 'tracpro.staging.nyaruka.com'
 SESSION_COOKIE_SECURE = False
 
 # these guys will get email from sentry
