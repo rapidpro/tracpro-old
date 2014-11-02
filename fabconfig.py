@@ -1,5 +1,5 @@
 config = dict(    
-    port='8025',
+    port='8027',
     app_dir='tracpro',
     friendly_name='TracPro',
     repository='ssh://git@github.com/rapidpro/trac.git',
