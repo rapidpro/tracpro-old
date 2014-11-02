@@ -68,8 +68,8 @@ SITE_HOST_PATTERN = 'http://trac.staging.nyaruka.com'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'trac',
-        'USER': 'trac',
+        'NAME': 'tracpro',
+        'USER': 'tracpro',
         'PASSWORD': 'nyarukaglue',
         'HOST': 'localhost',
         'PORT': '5432', 
