@@ -1,0 +1,33 @@
+- extends "frame.haml"
+- load i18n smartmin
+
+- block content
+  %h2
+    - blocktrans with location=group
+      Contacts in {{ location }}.
+
+  %table.table
+    %thead
+      %tr
+        %th
+          -trans "Phone"
+        %th
+          -trans "Name"
+        %th
+          -trans "Location"
+        %th
+          -trans "Role"
+
+    %tbody
+      -for contact in contacts
+        %tr
+          %td
+            {{ contact.phone }}
+          %td
+            {{ contact.name }}
+          %td
+            {{ contact.fields.location }}
+          %td
+            {{ contact.fields.role }}
+
+

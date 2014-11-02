@@ -1,0 +1,23 @@
+-extends 'base.html'
+
+-block content
+  %table.table
+    %thead
+      %tr
+        %th phone
+        %th msg
+        %th.date date
+
+    -for msg in msgs
+      %tr
+        %td= msg.phone
+        %td= msg.text
+        %td.date= msg.created_on
+
+
+-block extra-style
+  {{ block.super }}
+  :css
+    td.date {
+      width: 200px;
+    }
