@@ -1,5 +1,7 @@
 -extends 'base.html'
 
+-load dashorgs
+
 -block content
   %table.table
     %thead
@@ -10,14 +12,19 @@
 
     -for msg in msgs
       %tr
-        %td= msg.phone
+        %td.phone
+          - dash_national_phone msg.phone
         %td= msg.text
-        %td.date= msg.created_on
-
+        %td.date
+          - dash_display_time msg.created_on request.org
 
 -block extra-style
   {{ block.super }}
   :css
     td.date {
       width: 200px;
+    }
+
+    td.phone {
+      width: 150px;
     }
