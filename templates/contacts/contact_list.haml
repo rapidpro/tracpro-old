@@ -1,5 +1,5 @@
 - extends "frame.haml"
-- load i18n smartmin
+- load i18n smartmin dashorgs
 
 - block content
   %h2
@@ -22,7 +22,7 @@
       -for contact in contacts
         %tr
           %td
-            {{ contact.phone }}
+            {% national_phone contact.phone %}
           %td
             {{ contact.name }}
           %td

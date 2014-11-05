@@ -13,10 +13,10 @@
     -for msg in msgs
       %tr
         %td.phone
-          - dash_national_phone msg.phone
+          - national_phone msg.phone
         %td= msg.text
         %td.date
-          - dash_display_time msg.created_on request.org
+          - display_time msg.created_on request.org
 
 -block extra-style
   {{ block.super }}
