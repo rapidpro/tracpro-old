@@ -1,14 +1,17 @@
 -extends 'base.html'
 
--load dashorgs
+-load dashorgs i18n
 
 -block content
   %table.table
     %thead
       %tr
-        %th phone
-        %th msg
-        %th.date date
+        %th
+          -trans "phone"
+        %th
+          -trans "msg"
+        %th.date
+          -trans "date"
 
     -for msg in msgs
       %tr

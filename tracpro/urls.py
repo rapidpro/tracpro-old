@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'', include('tracpro.chat.urls')),
     url(r'', include('tracpro.home.urls')),
     url(r'', include('tracpro.contacts.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 )
 
 if settings.DEBUG:
