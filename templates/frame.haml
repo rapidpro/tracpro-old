@@ -1,6 +1,6 @@
 <!doctype html>
 - load compress thumbnail smartmin i18n
-%html{ }
+%html{ dir:"{{ lang_direction }}"}
 
   %head
     %meta{ charset:"utf-8"}
@@ -123,12 +123,15 @@
           %ul.lang-switcher
             -for lang in LANGUAGES
               %li
-                %form{ action:"/i18n/setlang/", method:"POST" }
-                  %input{ type:"hidden", name:"next", value:"/" }
-                  %input{ type:"hidden", name:"language", value:"{{ lang.0 }}" }
-                  {% csrf_token %}
-                  %a.lang-submit{ href:"javascript:void(0);" }
-                    {{ lang.1 }}
+                -if lang.0 == request.LANGUAGE_CODE
+                  {{ lang.1 }}
+                -else
+                  %form{ action:"/i18n/setlang/", method:"POST" }
+                    %input{ type:"hidden", name:"next", value:"/" }
+                    %input{ type:"hidden", name:"language", value:"{{ lang.0 }}" }
+                    {% csrf_token %}
+                    %a.lang-submit{ href:"javascript:void(0);" }
+                      {{ lang.1 }}
 
     <!-- JavaScript at the bottom for fast page loading, conditional based on whether we are serving locally -->
     <script>

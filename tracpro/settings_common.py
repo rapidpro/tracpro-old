@@ -51,7 +51,8 @@ MODELTRANSLATION_TRANSLATION_REGISTRY = "translation"
 LANGUAGE_CODE = 'en'
 
 # Available languages for translation
-LANGUAGES = (('en', "English"), ('fr', "French"), ('ps', "Pashto"), ('fa', "Persian"))
+LANGUAGES = (('en', _("English")), ('fr', _("French")), ('ps', _("Pashto")), ('fa', _("Persian")))
+RTL_LANGUAGES = set(['ps', 'fa'])
 DEFAULT_LANGUAGE = "en"
 
 SITE_ID = 1
@@ -133,6 +134,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'dash.orgs.context_processors.user_group_perms_processor',
     'dash.orgs.context_processors.set_org_processor',
+    'dash.context_processors.lang_direction'
 )
 
 MIDDLEWARE_CLASSES = (
