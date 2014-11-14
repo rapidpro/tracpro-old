@@ -62,7 +62,7 @@ STATICFILES_FINDERS = (
 )
 
 API_ENDPOINT = 'https://api.rapidpro.io'
-SITE_HOST_PATTERN = 'http://trac.staging.nyaruka.com'
+SITE_HOST_PATTERN = 'http://%s.tracpro.staging.nyaruka.com'
 
 # Set your production database settings here
 DATABASES = {
