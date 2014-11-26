@@ -1,5 +1,9 @@
+from __future__ import unicode_literals
+
 import requests
+
 from django.conf import settings
+
 
 def lookup_chat_messages(org):
     api_token = org.get_config('chat_api_token')

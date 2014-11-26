@@ -1,6 +1,9 @@
+from __future__ import unicode_literals
+
 from dash.orgs.views import OrgPermsMixin
 from smartmin.views import SmartTemplateView
 from .models import lookup_chat_messages
+
 
 class ChatListView(OrgPermsMixin, SmartTemplateView):
     template_name = 'chat/chat_list.html'

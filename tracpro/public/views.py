@@ -1,14 +1,16 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from smartmin.views import *
-from django.utils import timezone
+from __future__ import unicode_literals
+
+import json
 
 from dash.stories.models import Story
-from ureport.polls.models import Poll, PollQuestion
 from dash.categories.models import Category
 from dash.orgs.models import Org
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponse
+from smartmin.views import SmartReadView, SmartTemplateView
 from ureport.news.models import Video, NewsItem
-import math
-from datetime import timedelta, datetime
+from ureport.polls.models import Poll, PollQuestion
+
 
 class IndexView(SmartTemplateView):
     template_name = 'public/index.html'
@@ -41,6 +43,7 @@ class IndexView(SmartTemplateView):
         context['most_active_regions'] = org.get_most_active_regions()
 
         return context
+
 
 class NewsView(SmartTemplateView):
 
@@ -84,6 +87,7 @@ class AboutView(SmartTemplateView):
 
         return context
 
+
 class PollContextMixin(object):
 
     def derive_main_poll(self):
@@ -121,6 +125,7 @@ class PollsView(PollContextMixin, SmartTemplateView):
 
         return context
 
+
 class PollReadView(PollContextMixin, SmartReadView):
     template_name = 'public/polls.html'
     model = Poll
@@ -132,6 +137,7 @@ class PollReadView(PollContextMixin, SmartReadView):
 
     def derive_main_poll(self):
         return self.get_object()
+
 
 class PollQuestionResultsView(SmartReadView):
     model = PollQuestion
@@ -147,6 +153,7 @@ class PollQuestionResultsView(SmartReadView):
             segment = json.loads(segment)
 
         return HttpResponse(json.dumps(self.object.get_results(segment=segment)))
+
 
 class BoundaryView(SmartTemplateView):
 
@@ -179,6 +186,7 @@ class ReportersResultsView(SmartReadView):
             output_data = self.get_object().organize_categories_data(contact_field, api_data)
 
         return HttpResponse(json.dumps(output_data))
+
 
 class StoriesView(SmartTemplateView):
     template_name = 'public/stories.html'
@@ -228,6 +236,7 @@ class StoryReadView(SmartReadView):
 
         return context
 
+
 class UreportersView(SmartTemplateView):
     template_name = 'public/ureporters.html'
 
@@ -236,6 +245,7 @@ class UreportersView(SmartTemplateView):
 
         context['org'] = self.request.org
         return context
+
 
 class JoinEngageView(SmartTemplateView):
     template_name = 'public/join_engage.html'

@@ -1,10 +1,13 @@
+from __future__ import unicode_literals
+
 from dash.orgs.models import Org
-from dash.orgs.views import InferOrgMixin, OrgPermsMixin
+from dash.orgs.views import OrgPermsMixin
 from django import forms
-from smartmin.users.views import SmartCRUDL, SmartCreateView, SmartUpdateView, SmartListView
 from django.core.validators import MinLengthValidator
-from .models import Supervisor
 from django.utils.translation import ugettext_lazy as _
+from smartmin.users.views import SmartCRUDL, SmartCreateView, SmartUpdateView, SmartListView
+from .models import Supervisor
+
 
 class SupervisorForm(forms.ModelForm):
     is_active = forms.BooleanField(label=_("Active"),
@@ -28,6 +31,7 @@ class SupervisorForm(forms.ModelForm):
 
     class Meta:
         model = Supervisor
+
 
 class SupervisorCRUDL(SmartCRUDL):
     model = Supervisor

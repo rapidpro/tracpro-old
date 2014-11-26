@@ -1,5 +1,8 @@
+from __future__ import unicode_literals
+
 from dash.orgs.views import OrgPermsMixin
 from smartmin.views import SmartTemplateView
+
 
 class ContactListView(OrgPermsMixin, SmartTemplateView):
     template_name = 'contacts/contact_list.html'
@@ -10,4 +13,3 @@ class ContactListView(OrgPermsMixin, SmartTemplateView):
         context['group'] = "%s" % self.request.user.get_region()
         context['contacts'] = self.request.org.get_api().get_contacts(group=context['group'])
         return context
-

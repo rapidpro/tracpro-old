@@ -1,7 +1,9 @@
+from __future__ import unicode_literals
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+
 
 class Supervisor(User):
     """
@@ -18,7 +20,6 @@ class Supervisor(User):
 
         # add ourself as an editor to our new org
         self.org_editors.add(org)
-
 
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
