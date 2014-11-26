@@ -31,6 +31,7 @@ class SupervisorForm(forms.ModelForm):
 
     class Meta:
         model = Supervisor
+        exclude = []
 
 
 class SupervisorCRUDL(SmartCRUDL):
@@ -41,7 +42,7 @@ class SupervisorCRUDL(SmartCRUDL):
         fields = ('name', 'username', 'org', 'region')
 
         def get_name(self, obj):
-            return unicode(obj)
+            return obj.get_name()
 
         def get_org(self, obj):
             return ", ".join([unicode(o) for o in obj.org_editors.all()])

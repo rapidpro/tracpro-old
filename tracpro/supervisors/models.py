@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from tracpro.utils import get_cacheable_attr
 
 
 class Supervisor(User):
@@ -14,15 +15,26 @@ class Supervisor(User):
                               verbose_name=_("Region"),
                               help_text=_("The name of the Region or State this supervisor belongs to, this should map to the Contact group on RapidPro"))
 
-    def set_org(self, org):
-        # clear our current editors
-        self.org_editors.clear()
+    @classmethod
+    def create(cls, org, user, region):
+        supervisor = Supervisor(user_ptr_id=user.pk)
+        supervisor.__dict__.update(user.__dict__)
+        supervisor.pk = None
+        supervisor.region = region
+        supervisor.save()
+        supervisor.set_org(org)
+        return supervisor
 
-        # add ourself as an editor to our new org
+    def set_org(self, org):
+        # remove ourselves as editor of other orgs, and add ourselves as an editor to this org
+        self.org_editors.clear()
         self.org_editors.add(org)
 
+    def get_name(self):
+        return " ".join([part for part in (self.first_name, self.last_name) if part])
+
     def __unicode__(self):
-        return "%s %s" % (self.first_name, self.last_name)
+        return self.get_name()
 
     class Meta:
         verbose_name = _("Supervisor")
@@ -30,22 +42,17 @@ class Supervisor(User):
 
 
 def get_region(user):
-    region = getattr(user, '__region', None)
+    """
+    Gets the region for the given user if it's actually a supervisor
+    """
+    if isinstance(user, Supervisor):
+        return user.region
 
-    if region is None:
-        supervisor = Supervisor.objects.filter(username=user.username).first()
-        if supervisor:
-            region = supervisor.region
-        else:
-            region = ''
+    def calculate():
+        supervisor = Supervisor.objects.filter(user_ptr_id=user.pk).first()
+        return supervisor.region if supervisor else None
 
-        user.__region = region
-
-    # '' indicates a cached value of None
-    if region == '':
-        return None
-    else:
-        return region
+    return get_cacheable_attr(user, '__region', calculate)
 
 # monkey patch onto user model
 User.get_region = get_region
