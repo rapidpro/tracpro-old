@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from dash.orgs.models import Org
 from django.contrib.auth.models import User, Group
 from django.test import TestCase
+from tracpro.contacts.models import Region
 from tracpro.supervisors.models import Supervisor
 
 
@@ -15,9 +16,12 @@ class TracProTest(TestCase):
 
         self.user = self.create_user("bob", extra_fields=dict(first_name="Bob"))
 
-        self.org = Org.objects.create(name="UNICEF", timezone="Africa/Kigali",
-                                      created_by=self.user, modified_by=self.user)
-        self.supervisor = Supervisor.create(self.org, self.user, "Kigali")
+        self.unicef = Org.objects.create(name="UNICEF", timezone="Asia/Kabul",
+                                         created_by=self.user, modified_by=self.user)
+
+        self.kandahar = Region.objects.create(group_uuid="kandahar-uuid", name="Kandahar", org=self.unicef)
+
+        self.supervisor = Supervisor.create(self.unicef, self.user, self.kandahar)
 
     def create_user(self, username, group_names=(), extra_fields=None):
         user = User.objects.create_user(username, "%s@nyaruka.com" % username, **extra_fields)
@@ -37,6 +41,6 @@ class TracProTest(TestCase):
             if not form.is_valid():
                 errors = []
                 for k, v in form.errors.iteritems():
-                    errors.append("%s=%s" % (k,v.as_text()))
+                    errors.append("%s=%s" % (k, v.as_text()))
                 self.fail("Create failed with form errors: %s, Posted: %s" % (",".join(errors), post_data))
 

@@ -15,14 +15,20 @@ class SupervisorForm(forms.ModelForm):
 
     first_name = forms.CharField(max_length=128,
                                  label=_("First Name"), help_text=_("The first name of the user"))
+
     last_name = forms.CharField(max_length=128,
                                 label=_("Last Name"), help_text=_("The last name of the user"))
+
     email = forms.CharField(max_length=256,
                             label=_("Email"), help_text=_("The email address for the user"))
+
     new_password = forms.CharField(widget=forms.PasswordInput, validators=[MinLengthValidator(8)], required=False,
-                                   label=_("New Password"), help_text=_("The password used to log in (minimum of 8 characters, optional)"))
+                                   label=_("New Password"),
+                                   help_text=_("The password used to log in (minimum of 8 characters, optional)"))
+
     password = forms.CharField(widget=forms.PasswordInput, validators=[MinLengthValidator(8)],
                                label=_("Password"), help_text=_("The password used to log in (minimum of 8 characters)"))
+
     region = forms.CharField(max_length=128,
                              label=_("Region"), help_text=_("The name of the region they supervise"))
 
@@ -40,6 +46,9 @@ class SupervisorCRUDL(SmartCRUDL):
 
     class List(OrgPermsMixin, SmartListView):
         fields = ('name', 'username', 'org', 'region')
+
+        def derive_queryset(self, **kwargs):
+            return super(SupervisorCRUDL.List, self).derive_queryset(**kwargs).filter(org=self.request.user.get_org())
 
         def get_name(self, obj):
             return obj.get_name()

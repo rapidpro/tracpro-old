@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from tracpro.contacts.models import Region
 from tracpro.utils import get_cacheable_attr
 
 
@@ -11,9 +12,9 @@ class Supervisor(User):
     A Supervisor represents a supervisor for a particular region of a country. They are tied to a group of users
     and can view and manage results, chats etc.. in that region
     """
-    region = models.CharField(max_length=64,
-                              verbose_name=_("Region"),
-                              help_text=_("The name of the Region or State this supervisor belongs to, this should map to the Contact group on RapidPro"))
+    region = models.ForeignKey(Region,
+                               verbose_name=_("Region"),
+                               help_text=_("The name of the region or state this supervisor belongs to"))
 
     @classmethod
     def create(cls, org, user, region):

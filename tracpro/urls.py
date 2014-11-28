@@ -9,10 +9,10 @@ urlpatterns = patterns('',
     url(r'^manage/', include('dash.stories.urls')),
     url(r'^manage/', include('dash.categories.urls')),
     url(r'^users/', include('dash.users.urls')),
-    url(r'', include('tracpro.supervisors.urls')),
     url(r'', include('tracpro.chat.urls')),
     url(r'', include('tracpro.home.urls')),
     url(r'', include('tracpro.contacts.urls')),
+    url(r'', include('tracpro.supervisors.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
 )
 

@@ -212,7 +212,9 @@ INSTALLED_APPS = (
     'dash.utils',
     'dash.categories',
 
-    # supervisors
+    # custom
+    'tracpro.contacts',
+    'tracpro.polls',
     'tracpro.supervisors',
 )
 
@@ -287,11 +289,15 @@ PERMISSIONS = {
           'list'),  # can view a list of the objects
 
     'dashblocks.dashblock': ('html', ),
+
     'orgs.org': ('choose', 'edit', 'home', 'manage_accounts', 'create_login', 'join',
                  'chat_list', 'contact_list'),
+
     'polls.poll': ('questions', 'responses', 'images'),
+
     'stories.story': ('html', 'images'),
 
+    'supervisors.supervisor': ('create', 'list', 'update')
 }
 
 # assigns the permissions that each group should have
@@ -299,40 +305,54 @@ GROUP_PERMISSIONS = {
     "Administrators": (
         'categories.category.*',
         'categories.categoryimage.*',
+
         'dashblocks.dashblock.*',
         'dashblocks.dashblocktype.*',
+
         'news.newsitem.*',
         'news.video.*',
+
         'orgs.org_edit',
         'orgs.org_home',
         'orgs.org_manage_accounts',
         'orgs.org_profile',
         'orgs.orgbackground.*',
+
         'polls.poll.*',
         'polls.pollcategory.*',
         'polls.pollimage.*',
         'polls.featuredresponse.*',
+
         'stories.story.*',
         'stories.storyimage.*',
+
+        'supervisors.supervisor.*',
+
         'users.user_profile',
     ),
     "Editors": (
         'categories.category.*',
         'categories.categoryimage.*',
+
         'dashblocks.dashblock.*',
         'dashblocks.dashblocktype.*',
+
         'news.newsitem.*',
         'news.video.*',
+
         'orgs.org_home',
         'orgs.org_profile',
         'orgs.org_contact_list',
         'orgs.org_chat_list',
+
         'polls.poll.*',
         'polls.pollcategory.*',
         'polls.pollimage.*',
         'polls.featuredresponse.*',
+
         'stories.story.*',
         'stories.storyimage.*',
+
         'users.user_profile',
     ),
 }
