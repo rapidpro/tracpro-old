@@ -18,7 +18,7 @@ class Supervisor(User):
 
     @classmethod
     def create(cls, org, user, region):
-        supervisor = Supervisor(user_ptr_id=user.pk)
+        supervisor = cls(user_ptr_id=user.pk)
         supervisor.__dict__.update(user.__dict__)
         supervisor.pk = None
         supervisor.region = region
@@ -54,6 +54,7 @@ def get_region(user):
         return supervisor.region if supervisor else None
 
     return get_cacheable_attr(user, '__region', calculate)
+
 
 # monkey patch onto user model
 User.get_region = get_region

@@ -16,6 +16,9 @@ class Region(models.Model):
 
     org = models.ForeignKey(Org, verbose_name=_("Organization"), related_name='regions')
 
+    def __unicode__(self):
+        return self.name
+
 
 class Contact(models.Model):
     """
@@ -26,12 +29,22 @@ class Contact(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=128, blank=True,
                             help_text=_("The name of this contact"))
 
-    urn = models.CharField(verbose_name=_("URN"), max_length=255, help_text=_("The URN of this contact"))
+    urn_scheme = models.CharField(verbose_name=_("URN Scheme"), max_length=255, default='tel')
+
+    urn_path = models.CharField(verbose_name=_("URN Path"), max_length=255)
 
     region = models.ForeignKey(Region,
                                verbose_name=_("Region"),
                                related_name='contacts',
                                help_text=_("The name of the region or state this contact lives in"))
+
+    def __unicode__(self):
+        return self.name if self.name else self.urn_path
+
+    @classmethod
+    def create(cls, name, urn_scheme, urn_path, region, uuid):
+        return cls.objects.create(name=name, urn_scheme=urn_scheme, urn_path=urn_path,
+                                  region=region, uuid=uuid)
 
     def get_responses(self):
         return self.responses.order_by('-created_on')

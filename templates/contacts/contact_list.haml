@@ -3,31 +3,26 @@
 
 - block content
   %h2
-    - blocktrans with location=group
-      Contacts in {{ location }}.
+    -if region
+      -blocktrans with region=region
+        Contacts for {{ region }}
+    -else
+      -trans "Contacts"
 
   %table.table
     %thead
       %tr
-        %th
-          -trans "Phone"
+        -if not region
+          %th
+            -trans "Region"
         %th
           -trans "Name"
-        %th
-          -trans "Location"
-        %th
-          -trans "Role"
 
     %tbody
-      -for contact in contacts
+      -for contact in object_list
         %tr
-          %td
-            {% national_phone contact.phone %}
+          -if not region
+            %td
+              {{ contact.region }}
           %td
             {{ contact.name }}
-          %td
-            {{ contact.fields.location }}
-          %td
-            {{ contact.fields.role }}
-
-

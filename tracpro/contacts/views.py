@@ -1,15 +1,34 @@
 from __future__ import unicode_literals
 
 from dash.orgs.views import OrgPermsMixin
-from smartmin.views import SmartTemplateView
+from smartmin.users.views import SmartCRUDL, SmartListView
+from .models import Contact
 
 
-class ContactListView(OrgPermsMixin, SmartTemplateView):
-    template_name = 'contacts/contact_list.html'
-    permission = 'orgs.org_contact_list'
+class ContactCRUDL(SmartCRUDL):
+    model = Contact
+    actions = ('list',)
 
-    def get_context_data(self, **kwargs):
-        context = super(ContactListView, self).get_context_data(**kwargs)
-        context['group'] = "%s" % self.request.user.get_region()
-        context['contacts'] = self.request.org.get_api().get_contacts(group=context['group'])
-        return context
+    class List(OrgPermsMixin, SmartListView):
+        def derive_fields(self):
+            region = self.request.user.get_region()
+            if region:
+                return 'name', 'urn_path'
+            else:
+                return 'region', 'name', 'urn_path'
+
+        def get_context_data(self, **kwargs):
+            context = super(ContactCRUDL.List, self).get_context_data(**kwargs)
+            context['region'] = self.request.user.get_region()
+            return context
+
+        def get_queryset(self, **kwargs):
+            org = self.request.user.get_org()
+
+            qs = super(ContactCRUDL.List, self).get_queryset(**kwargs)
+            qs = qs.filter(region__org=org)
+
+            region = self.request.user.get_region()
+            if region:
+                qs = qs.filter(region=region)
+            return qs

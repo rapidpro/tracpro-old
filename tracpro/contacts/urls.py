@@ -1,8 +1,5 @@
 from __future__ import unicode_literals
 
-from django.conf.urls import patterns, url
-from .views import ContactListView
+from .views import ContactCRUDL
 
-urlpatterns = patterns('',
-    url(r'^contacts/', ContactListView.as_view(), name='contacts.contact_list')
-)
+urlpatterns = ContactCRUDL().as_urlpatterns()

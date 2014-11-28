@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 
 from dash.orgs.models import Org
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.test import TestCase
-from tracpro.contacts.models import Region
+from tracpro.contacts.models import Contact, Region
 from tracpro.supervisors.models import Supervisor
+from uuid import uuid4
 
 
 class TracProTest(TestCase):
@@ -14,25 +15,58 @@ class TracProTest(TestCase):
     def setUp(self):
         self.superuser = User.objects.create_superuser(username="super", email="super@user.com", password="super")
 
-        self.user = self.create_user("bob", extra_fields=dict(first_name="Bob"))
+        self.org = Org.objects.create(name="UNICEF", timezone="Asia/Kabul", subdomain="unicef",
+                                      created_by=self.superuser, modified_by=self.superuser)
+        self.other_org = Org.objects.create(name="WFP", timezone="Africa/Kigali", subdomain="wfp",
+                                            created_by=self.superuser, modified_by=self.superuser)
 
-        self.unicef = Org.objects.create(name="UNICEF", timezone="Asia/Kabul",
-                                         created_by=self.user, modified_by=self.user)
+        self.admin = self.create_user("admin", org=self.org, first_name="Adrian", last_name="Admin")
+        self.org.administrators.add(self.admin)
 
-        self.kandahar = Region.objects.create(group_uuid="kandahar-uuid", name="Kandahar", org=self.unicef)
+        self.other_admin = self.create_user("other_admin", org=self.other_org)
+        self.other_org.administrators.add(self.other_admin)
 
-        self.supervisor = Supervisor.create(self.unicef, self.user, self.kandahar)
+        self.region1 = self.create_region("Kandahar")
+        self.region2 = self.create_region("Spinbaldak")
 
-    def create_user(self, username, group_names=(), extra_fields=None):
-        user = User.objects.create_user(username, "%s@nyaruka.com" % username, **extra_fields)
-        user.set_password(username)
-        user.save()
-        for group in group_names:
-            user.groups.add(Group.objects.get(name=group))
+        self.user1 = self.create_user("sam", org=self.org, first_name="Super", last_name="Sam")
+        self.supervisor1 = Supervisor.create(self.org, self.user1, self.region1)
+
+        self.user2 = self.create_user("sue", org=self.org, first_name="Sue")
+        self.supervisor2 = Supervisor.create(self.org, self.user2, self.region2)
+
+        self.create_contact("Ann", "1234", self.region1)
+        self.create_contact("Bob", "2345", self.region1)
+        self.create_contact("Jim", "3456", self.region2)
+
+    def create_user(self, username, org, **extra_fields):
+        user = User.objects.create_user(username, "%s@nyaruka.com" % username, username, **extra_fields)
+        if org:
+            user.set_org(org)
+
         return user
 
+    def create_region(self, name, org=None, group_uuid=None):
+        if not group_uuid:
+            group_uuid = uuid4()
+        if not org:
+            org = self.org
+
+        return Region.objects.create(group_uuid=group_uuid, name=name, org=org)
+
+    def create_contact(self, name, phone, region, uuid=None):
+        if not uuid:
+            uuid = uuid4()
+
+        return Contact.create(name, 'tel', phone, region, uuid)
+
     def login(self, user):
-        self.assertTrue(self.client.login(username=user.username, password=user.username), "Couldn't login as %(user)s / %(user)s" % dict(user=user.username))
+        result = self.client.login(username=user.username, password=user.username)
+        self.assertTrue(result, "Couldn't login as %(user)s / %(user)s" % dict(user=user.username))
+
+    def client_get(self, url, **kwargs):
+        kwargs.update(dict(HTTP_HOST='unicef.localhost'))
+        return self.client.get(url, **kwargs)
 
     def assertNoFormErrors(self, response, post_data=None):
         if response.status_code == 200 and 'form' in response.context:

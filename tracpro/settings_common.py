@@ -208,7 +208,6 @@ INSTALLED_APPS = (
     # dash apps
     'dash.orgs',
     'dash.dashblocks',
-    'dash.stories',
     'dash.utils',
     'dash.categories',
 
@@ -288,14 +287,14 @@ PERMISSIONS = {
           'delete', # can delete an object,
           'list'),  # can view a list of the objects
 
+    'contacts.contact': ('list',),
+
     'dashblocks.dashblock': ('html', ),
 
     'orgs.org': ('choose', 'edit', 'home', 'manage_accounts', 'create_login', 'join',
                  'chat_list', 'contact_list'),
 
     'polls.poll': ('questions', 'responses', 'images'),
-
-    'stories.story': ('html', 'images'),
 
     'supervisors.supervisor': ('create', 'list', 'update')
 }
@@ -305,6 +304,8 @@ GROUP_PERMISSIONS = {
     "Administrators": (
         'categories.category.*',
         'categories.categoryimage.*',
+
+        'contacts.contact.*',
 
         'dashblocks.dashblock.*',
         'dashblocks.dashblocktype.*',
@@ -323,9 +324,6 @@ GROUP_PERMISSIONS = {
         'polls.pollimage.*',
         'polls.featuredresponse.*',
 
-        'stories.story.*',
-        'stories.storyimage.*',
-
         'supervisors.supervisor.*',
 
         'users.user_profile',
@@ -333,6 +331,8 @@ GROUP_PERMISSIONS = {
     "Editors": (
         'categories.category.*',
         'categories.categoryimage.*',
+
+        'contacts.contact.*',
 
         'dashblocks.dashblock.*',
         'dashblocks.dashblocktype.*',
@@ -349,9 +349,6 @@ GROUP_PERMISSIONS = {
         'polls.pollcategory.*',
         'polls.pollimage.*',
         'polls.featuredresponse.*',
-
-        'stories.story.*',
-        'stories.storyimage.*',
 
         'users.user_profile',
     ),
