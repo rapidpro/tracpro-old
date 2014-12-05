@@ -212,6 +212,7 @@ INSTALLED_APPS = (
     'dash.categories',
 
     # custom
+    'tracpro.temba',
     'tracpro.contacts',
     'tracpro.polls',
     'tracpro.supervisors',
