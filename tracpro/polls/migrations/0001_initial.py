@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contacts', '0001_initial'),
+        ('contacts', '0002_auto_20141128_2026'),
         ('orgs', '0009_auto_20141125_1442'),
     ]
 
@@ -16,9 +16,8 @@ class Migration(migrations.Migration):
             name='Poll',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('flow_start_uuid', models.CharField(max_length=36)),
+                ('flow_uuid', models.CharField(max_length=36)),
                 ('name', models.CharField(max_length=64, verbose_name='Name of this poll')),
-                ('created_on', models.DateTimeField(help_text='When this poll was created')),
                 ('org', models.ForeignKey(related_name='polls', to='orgs.Org')),
             ],
             options={
@@ -34,6 +33,18 @@ class Migration(migrations.Migration):
                 ('value', models.CharField(max_length=640, null=True)),
                 ('decimal_value', models.DecimalField(null=True, max_digits=36, decimal_places=8)),
                 ('submitted_on', models.DateTimeField(help_text='When this answer was submitted')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='PollIssue',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('flow_start_uuid', models.CharField(max_length=36)),
+                ('created_on', models.DateTimeField(help_text='When this poll was created')),
+                ('poll', models.ForeignKey(related_name='starts', to='orgs.Org')),
             ],
             options={
             },
@@ -58,7 +69,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('flow_run_uuid', models.CharField(max_length=36)),
                 ('contact', models.ForeignKey(related_name='responses', to='contacts.Contact')),
-                ('poll', models.ForeignKey(related_name='responses', to='polls.Poll')),
+                ('issue', models.ForeignKey(related_name='responses', to='polls.PollIssue')),
             ],
             options={
             },
