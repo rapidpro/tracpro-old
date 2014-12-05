@@ -79,12 +79,6 @@
                           %a{ href:"{% url 'supervisors.supervisor_list' %}"}
                             - trans "Supervisors"
 
-
-                - if org_perms.orgs.org_chat_list
-                  %li
-                    %a{ href:"{% url 'chats.chat_list' %}" }
-                      - trans "Group Chat"
-
                 - if org_perms.orgs.org_contact_list
                   %li
                     %a{ href:"{% url 'contacts.contact_list' %}" }
