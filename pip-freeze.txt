@@ -1,4 +1,4 @@
--e git+https://github.com/django/django.git@stable/1.7.x#egg=django
+Django==1.7.1
 boto==2.32.0
 django-storages==1.1.8
 Markdown==2.4.1
@@ -34,8 +34,8 @@ redis==2.10.1
 requests==2.3.0
 simplejson==3.6.0
 six==1.7.3
--e git+https://github.com/nyaruka/smartmin.git@to_django_1_7#egg=smartmin-dev
-sorl-thumbnail==11.12.1b
+-e git+https://github.com/nyaruka/smartmin.git#egg=smartmin-dev
+sorl-thumbnail==12.1c
 sqlparse==0.1.11
 wsgiref==0.1.2
 xlrd==0.9.3
